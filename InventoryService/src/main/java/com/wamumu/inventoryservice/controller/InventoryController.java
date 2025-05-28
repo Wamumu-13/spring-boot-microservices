@@ -5,6 +5,7 @@ import com.wamumu.inventoryservice.response.EventInventoryResponse;
 import com.wamumu.inventoryservice.response.VenueInventoryResponse;
 import com.wamumu.inventoryservice.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,5 +29,16 @@ public class InventoryController {
     @GetMapping("/inventory/venue/{venueId}")
     public @ResponseBody VenueInventoryResponse inventoryByVenueId(@PathVariable("venueId") Long venueId){
         return inventoryService.getVenueInformationById(venueId);
+    }
+
+    @GetMapping("/inventory/event/{eventId}")
+    public @ResponseBody EventInventoryResponse inventoryGetEventsByVenueId(@PathVariable Long eventId){
+        return inventoryService.getEventInventory(eventId);
+    }
+
+    @PutMapping("inventory/event/{eventId}/capacity/{capacity}")
+    public ResponseEntity<Void> updateEventCapacity(@PathVariable("eventId") Long eventId, @PathVariable("capacity") Long ticketsBooked){
+        inventoryService.updateEventCapacity(eventId,ticketsBooked);
+        return ResponseEntity.ok().build();
     }
 }
